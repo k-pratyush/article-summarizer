@@ -1,3 +1,16 @@
 <%- include("partials/header") -%>
 
+<main role="main" class="container">
+    <div class="starter-template">
+        <h1>Enter your text</h1>
+        <form method="post" action="/main">
+            <div class="form-group">
+                <textarea type="text" class="form-control" row="5" col="30" name="inputArticle"
+                    placeholder="Paste your article here"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" name="sumButton">Summarize!</button>
+        </form>
+    </div>
+</main>
+
 <%- include("partials/footer") -%>

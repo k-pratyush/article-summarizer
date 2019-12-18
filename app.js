@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
-const unirest = require('unirest');
+const smmry = require('smmry')({ SM_API_KEY: process.env.API_KEY });
 
 const app = express();
 
@@ -39,14 +39,6 @@ const User = mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-//API CALL
-const request = unirest("GET", "https://nehac-ml-analyzer.p.rapidapi.com/article");
-
-request.headers({
-  "x-rapidapi-host": "nehac-ml-analyzer.p.rapidapi.com",
-  "x-rapidapi-key": process.env.API_KEY
-});
 
 app.get("/", function(req, res) {
     res.render("home");
@@ -104,7 +96,15 @@ app.post("/login", function(req, res) {
 });
 
 app.post("/main", function(req, res) {
-    
+    const text = req.body.inputArticle;
+    smmry.summarizeText(text)
+      .then(data => {
+        res.render('result', {shortText: data.sm_api_content});
+        console.log(data);
+      })
+      .catch(err => {
+        console.error(err);
+    });
 });
 
 app.listen(3000, function() {
