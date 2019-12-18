@@ -23,7 +23,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/userDB", {
+
+let url = "mongodb+srv://" + process.env.USERID +":" + process.env.PASSWORD + "@cluster0-ru1ds.mongodb.net/userDB";
+
+mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -107,6 +110,6 @@ app.post("/main", function(req, res) {
     });
 });
 
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
     console.log("server active");
 });
